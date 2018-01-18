@@ -15,7 +15,7 @@ typedef long long ll;
 using namespace std;
 
 int main(){
-    FAST;
+	FAST;
 	int w; cin >> w;
 	if(w > 2){
 		if(w % 2 == 0)
