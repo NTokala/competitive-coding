@@ -26,9 +26,7 @@ int main(){
   int scoreK = scores[k -1];
   int count = 0;
   F0R(j, n){
-    if(scores[j] < scoreK)
-      break;
-    if(scores[j] < 1)
+    if(scores[j] < scoreK || scores[j] < 1)
       break;
     ++count;
   }
