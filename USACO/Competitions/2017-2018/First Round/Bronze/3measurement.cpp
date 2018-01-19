@@ -13,12 +13,15 @@
 typedef long long ll;
 
 using namespace std;
+
 struct Entry{
-	int day;
+  int day;
 	string name;
-	int gain;
+  int gain;
 };
+//used to sort logs by day 
 bool acompare(Entry a, Entry b) { return a.day < b.day; }
+//who has the highest production rate 
 int moneyMaker(map<string, int> m){
 	int max = 0;
 	for(auto it = m.begin(); it != m.end(); it++){
@@ -27,45 +30,49 @@ int moneyMaker(map<string, int> m){
 	}
 	return max;
 }
+
 int main(){
 	ifstream cin ("measurement.in");
-    ofstream cout ("measurement.out");
-   	int count = 0;
-   	int startM = 7;
-   	int N; cin >> N;
-   	vector<Entry> log;
-   	F0R(i,N){
-   		Entry temp;
-   		cin >> temp.day >> temp.name >> temp.gain;
-   		log.push_back(temp);
-   	}
-   	sort(log.begin(), log.end(), acompare);
-   	//Now every entry is sorted by date!
-   	//initialize "bank"
-   	map<string, int> cowGods;
-   	cowGods["Bessie"] = 7;
-   	cowGods["Elsie"] = 7;
-   	cowGods["Mildred"] = 7;
-   	//now, let's modify the 'bank' and count changes on the board
-   	F0R(i, N){
-   		vector<string> oldMoney;
-   		vector<string> newMoney;
-   		int highMilk = moneyMaker(cowGods);
-   		for(auto i = cowGods.begin(); i != cowGods.end(); i++){
-   			if(i -> second == highMilk)
-   				oldMoney.push_back(i -> first);
-   		}
-   		cowGods[log[i].name] += log[i].gain;
-   		highMilk = moneyMaker(cowGods);
-   		for(auto i = cowGods.begin(); i != cowGods.end(); i++){
-   			if(i -> second == highMilk)
-   				newMoney.push_back(i -> first);
-   		}
-   		if(oldMoney != newMoney)
-   			++count;
-   	}
+  ofstream cout ("measurement.out");
+  int count = 0;
+  int N; cin >> N;
 
-   	cout << count << "\n";
-   	return 0;
+  vector<Entry> log;
+  F0R(i,N){
+    Entry temp;
+   	cin >> temp.day >> temp.name >> temp.gain;
+   	log.push_back(temp);
+   }
+  sort(log.begin(), log.end(), acompare);
+  //Now every entry is sorted by date!
+  //initialize "bank"
+  map<string, int> cowGods;
+  cowGods["Bessie"] = 7;
+  cowGods["Elsie"] = 7;
+  cowGods["Mildred"] = 7;
+  //We will literally compare the previous board to the new board each time we iterate over a new log entry. 
+  F0R(i, N){
+    vector<string> oldMoney;
+   	vector<string> newMoney;
+    //Create the old board
+   	int highMilk = moneyMaker(cowGods);
+   	for(auto i = cowGods.begin(); i != cowGods.end(); i++){
+   		if(i -> second == highMilk)
+   			oldMoney.push_back(i -> first);
+   	}
+    //read log
+   	cowGods[log[i].name] += log[i].gain;
+    //Create the new board
+   	highMilk = moneyMaker(cowGods);
+   	for(auto i = cowGods.begin(); i != cowGods.end(); i++){
+   		if(i -> second == highMilk)
+   			newMoney.push_back(i -> first);
+   	}
+    //Sorting is not necessary; the names are added to the list in the same order!
+   	if(oldMoney != newMoney)
+   		++count;
+  }
+   cout << count << "\n";
+   return 0;
 }
 
